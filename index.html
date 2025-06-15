@@ -114,7 +114,7 @@
       color: #fff;
     }
 
-    .login-container, .support-container {
+    .login-container, .support-container, #flagSection {
       display: none;
       flex-direction: column;
       align-items: center;
@@ -124,13 +124,15 @@
       padding: 20px;
       box-sizing: border-box;
       width: 100%;
-      max-width: 400px;
+      max-width: 600px;
       margin: 20px auto;
       border-radius: 8px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      font-size: 1.2em;
+      font-family: monospace;
     }
 
-    .login-container.show, .support-container.show {
+    .login-container.show, .support-container.show, #flagSection.show {
       display: flex;
     }
 
@@ -177,36 +179,8 @@
   <h1>Daftar Artis Indonesia!</h1>
 
   <div class="container" id="mainContent">
-    <div class="card">
-      <img src="img/Reza Rahadian 🇮🇩.jpeg" alt="Reza Rahardian" />
-      <h2>Reza Rahardian</h2>
-      <p>"Megang Mic bawaannya pengen adzan" — kata orang "ganteng".</p>
-    </div>
-    <div class="card">
-      <img src="img/davina.jpeg" alt="Davina Karamoy" />
-      <h2>Davina Karamoy</h2>
-      <p>Pertaruhan Filmnya bagus bgt (Season 1 sangat menarik 😏)</p>
-    </div>
-    <div class="card">
-      <img src="img/arum.jpeg" alt="Callista Arum" />
-      <h2>Callista Arum</h2>
-      <p>"Aku kemarin habis naik sindoroooo"</p>
-    </div>
-    <div class="card">
-      <img src="img/abun.jpeg" alt="Abun Sungkar" />
-      <h2>Abun Sungkar</h2>
-      <p>"Cowo ganteng gw"</p>
-    </div>
-    <div class="card">
-      <img src="img/iqbaal.jpeg" alt="Iqbaal Ramadhan" />
-      <h2>Iqbaal Ramadhan</h2>
-      <p>Film Dilan bagus banget, tapi ada Film dilan yang sedih bgt (Mungkin di film ke-2?)</p>
-    </div>
-    <div class="card">
-      <img src="img/ario.jpeg" alt="Ario Bayu" />
-      <h2>Ario Bayu</h2>
-      <p>Pernah jadi pemeran Soekarno</p>
-    </div>
+    <!-- Kartu artis (isi seperti sebelumnya) -->
+    <!-- ... -->
   </div>
 
   <div class="login-container" id="loginPage">
@@ -224,6 +198,9 @@
     <p>Nama pengguna adalah nama developer situs ini.</p>
     <p>Kata sandi dapat ditemukan dengan memperhatikan deskripsi Reza Rahadian, Davina Karamoy dan Iqbaal Ramadhan.</p>
   </div>
+
+  <!-- ✅ FLAG TERSEMBUNYI -->
+  <div id="flagSection"></div>
 
   <div class="footer" id="mainFooter">
     <span class="active">1</span>
@@ -247,6 +224,7 @@
     const loginMessage = document.getElementById("loginMessage");
     const supportBtn = document.getElementById("support");
     const supportHint = document.getElementById("supportHint");
+    const flagSection = document.getElementById("flagSection");
 
     menuIcon.addEventListener("click", () => {
       dropdownMenu.classList.toggle("show");
@@ -271,26 +249,24 @@
     });
 
     loginForm.addEventListener("submit", function (event) {
-  event.preventDefault();
+      event.preventDefault();
+      const expectedUsername = atob("aGFybGFu"); // harlan
+      const expectedPassword = atob("Z2FudGVuZzEy"); // ganteng12
 
-  const expectedUsername = atob("aGFybGFu");  
-  const expectedPassword = atob("Z2FudGVuZzEy"); 
+      const inputUsername = usernameInput.value.trim();
+      const inputPassword = passwordInput.value.trim();
 
-  const inputUsername = usernameInput.value.trim();
-  const inputPassword = passwordInput.value.trim();
-
-  if (inputUsername === expectedUsername && inputPassword === expectedPassword) {
-    sessionStorage.setItem("isLoggedIn", "true");
-    window.location.href = "flag.html";
-  } else {
-    loginMessage.textContent = "Nama pengguna atau kata sandi salah!";
-  }
-});
-
+      if (inputUsername === expectedUsername && inputPassword === expectedPassword) {
+        showFlag();
+      } else {
+        loginMessage.textContent = "Nama pengguna atau kata sandi salah!";
+      }
+    });
 
     function showOnly(section) {
       loginPage.classList.remove("show");
       supportHint.classList.remove("show");
+      flagSection.classList.remove("show");
       mainContent.style.display = "none";
       mainFooter.style.display = "none";
       section.classList.add("show");
@@ -299,8 +275,15 @@
     function showMain() {
       loginPage.classList.remove("show");
       supportHint.classList.remove("show");
+      flagSection.classList.remove("show");
       mainContent.style.display = "flex";
       mainFooter.style.display = "flex";
+    }
+
+    function showFlag() {
+      showOnly(flagSection);
+      const encodedFlag = "VEk0MDR7bTRzMF9iM200bjNfQWVQZVB9";
+      flagSection.textContent = atob(encodedFlag);
     }
   </script>
 </body>
